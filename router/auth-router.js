@@ -8,7 +8,13 @@ const User = require('../model/user.js');
 const authRouter = module.exports = new Router();
 
 authRouter.post('/api/signup', jsonParser, (req, res, next) => {
-  User.create(req.body).then(token => res.status(201).send(token)).catch(next);
+  console.log('req.body: ', req.body);
+  User.create(req.body)
+    .then(token => {
+      res.status(201).send(token);
+      // console.log('res: ', res);
+    })
+    .catch(next);
 });
 
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
