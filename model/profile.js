@@ -5,15 +5,15 @@ import Mongoose, {Schema} from 'mongoose';
 const profileSchema = new Schema({
   owner: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
   email: {type: String, required: true},
-  firstName: {Type: String, required: true},
-  lastName: {Type: String, required: true},
-  streetAddress: {Type: String, required: true},
-  zip: {Type: Number, required: true},
-  city: {Type: String, required: true},
-  state: {Type: String, required: true},
-  phone: {Type: String, required: true},
-  isCook: {Type: Boolean, required: true},
-  avatarURL: {Type: String}
+  firstName: {type: String, required: true},
+  lastName: {type: String, required: true},
+  streetAddress: {type: String, required: true},
+  zip: {type: Number, required: true},
+  city: {type: String, required: true},
+  state: {type: String, required: true},
+  phone: {type: String, required: true},
+  isCook: {type: Boolean, required: true},
+  avatarURL: {type: String}
 });
 
 const Profile = Mongoose.model('profile', profileSchema);
