@@ -3,12 +3,12 @@
 import Mongoose, {Schema} from 'mongoose';
 
 const profileSchema = new Schema({
-  owner: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
-  email: {type: String, required: true},
+  userId: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
+  // email: {type: String, required: true},
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   streetAddress: {type: String, required: true},
-  zip: {type: Number, required: true},
+  zip: {type: String, required: true},
   city: {type: String, required: true},
   state: {type: String, required: true},
   phone: {type: String, required: true},
@@ -16,17 +16,20 @@ const profileSchema = new Schema({
   avatarURL: {type: String}
 });
 
-const Profile = Mongoose.model('profile', profileSchema);
+module.exports = Mongoose.model('profile', profileSchema);
 
-Profile.create = function(req){
-  return new Profile(req.body)
-    .save()
-    .then(profile => {
-      req.user.profile = profile._id;
-      return req.user.save()
-        .then(() => profile);
-    });
-};
+// const Profile = Mongoose.model('profile', profileSchema);
+//
+// Profile.create = function(req){
+//   console.log('req: ', req);
+//   return new Profile(req.body)
+//     .save()
+//     .then(profile => {
+//       req.user.profile = profile._id;
+//       return req.user.save()
+//         .then(() => profile);
+//     });
+// };
 
 // Profile.validateReqFile = (req) => {
 //   if(req.files.length > 1){
@@ -38,3 +41,6 @@ Profile.create = function(req){
 //   let [file] = req.files;
 //
 // };
+
+
+// export default Profile;
