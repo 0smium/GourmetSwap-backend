@@ -17,9 +17,6 @@ module.exports = (err, req, res, next) => {
   if(err.message.toLowerCase().includes('no authorization header'))
     return res.sendStatus(401);
 
-  if(err.message.toLowerCase().includes('no authorization header'))
-    return res.sendStatus(401);
-
   if(err.message.toLowerCase().includes('unauthorized'))
     return res.sendStatus(401);
 
