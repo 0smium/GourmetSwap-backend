@@ -7,9 +7,10 @@ const { S3 } = require('aws-sdk');
 const multer = require('multer');
 
 const s3 = new S3();
-const upload = multer({ dest: `${__dirname}/temp-assets` });
+const upload = multer({ dest: `${__dirname}/../temp-assets` });
 
 module.exports = fieldName => (req, res, next) => {
+  console.log('s3 req.body', fieldName);
   upload.single(fieldName)(req, res, err => {
     if (err) return next(err);
     if (!req.file) return next(new Error('validation failed no file added'));

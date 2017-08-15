@@ -2,11 +2,13 @@ import { Router } from 'express';
 import parserBody from '../middleware/parser-body.js';
 import Meal from '../model/meal.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
+import s3upload from '../middleware/s3-upload-middleware.js';
 
 const mealRouter = module.exports = new Router();
 
-mealRouter.post('/api/meals', bearerAuth, parserBody, (req, res, next) => {
+mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next) => {
   req.body.userId = req.user._id;
+  req.body.photoURL = req.s3Data.Location;
   new Meal(req.body)
     .save()
     .then(meal => res.status(201).json(meal))

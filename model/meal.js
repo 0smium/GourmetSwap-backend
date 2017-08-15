@@ -1,7 +1,7 @@
 import Mongoose, {Schema} from 'mongoose';
 
 const mealSchema = new Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
+  userId: {type: Schema.Types.ObjectId, ref: 'user', required: true,},
   title: {type: String, required: true},
   description: {type: String, required: true},
   deliveryOffered: {type: Boolean, required: true},
