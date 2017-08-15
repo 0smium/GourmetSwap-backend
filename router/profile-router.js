@@ -2,18 +2,12 @@ import { Router } from 'express';
 import parserBody from '../middleware/parser-body.js';
 import Profile from '../model/profile.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
+import s3Upload from '../middleware/s3-upload-middleware.js';
 
 const profileRouter = module.exports = new Router();
 
-// profileRouter.post('/api/profiles', bearerAuth, parserBody, (req, res, next) => {
-// profileRouter.post('/api/profiles', bearerAuth, (req, res, next) => {
-//   console.log('profile req.body: ', req.body);
-//   Profile.create(req)
-//     .then(profile => res.status(201).json(profile))
-//     .catch(next);
-// });
-
-profileRouter.post('/api/profiles', bearerAuth, parserBody, (req, res, next) => {
+profileRouter.post('/api/profiles', bearerAuth, s3Upload('avatarURL'), (req, res, next) => {
+  req.body.avatarURL = req.s3Data.Location;
   req.body.userId = req.user._id;
   // req.body.email = req.user.email;
   new Profile(req.body)

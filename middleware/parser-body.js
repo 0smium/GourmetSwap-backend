@@ -3,7 +3,7 @@ import multer from 'multer';
 import bodyParser from 'body-parser';
 import createError from 'http-errors';
 
-const upload = multer({dest: `${__dirname}/../temp`});
+const upload = multer({dest: `${__dirname}/../temp-assets`});
 
 // INTERFACE
 export default (req, res, next) => {
