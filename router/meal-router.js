@@ -31,3 +31,11 @@ mealRouter.get('/api/meals/:id', (req, res, next) => {
     })
     .catch(next);
 });
+
+mealRouter.delete('/api/meals:id', (req, res, next) => {
+  Meal.findOneAndDelete({ userId: req. params.id })
+    .then(() => {
+      res.setStatus(204));
+    })
+    .catch(next);
+})
