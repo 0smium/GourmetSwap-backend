@@ -6,8 +6,8 @@ import s3Upload from '../middleware/s3-upload-middleware.js';
 
 const profileRouter = module.exports = new Router();
 
-profileRouter.post('/api/profiles', bearerAuth, s3Upload('avatarURL'), (req, res, next) => {
-  req.body.avatarURL = req.s3Data.Location;
+profileRouter.post('/api/profiles', bearerAuth, parserBody, s3Upload('avatarURL'), (req, res, next) => {
+  if(req.s3Data) req.body.avatarURL = req.s3Data.Location;
   req.body.userId = req.user._id;
   // req.body.email = req.user.email;
   new Profile(req.body)

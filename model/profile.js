@@ -12,7 +12,7 @@ const profileSchema = new Schema({
   city: {type: String, required: true},
   state: {type: String, required: true},
   phone: {type: String, required: true},
-  isCook: {type: Boolean, required: true},
+  wantsToBeCook: {type: Boolean, required: true},
   avatarURL: {type: String}
 });
 

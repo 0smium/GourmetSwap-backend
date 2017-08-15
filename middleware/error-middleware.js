@@ -1,7 +1,6 @@
 'use strict';
 // eslint-disable-next-line no-unused-vars
 module.exports = (err, req, res, next) => {
-  if(err) console.log('error from middleware: ', err);
   if(err.message.toLowerCase().includes('objectid failed'))
     return res.sendStatus(404);
 
@@ -23,5 +22,6 @@ module.exports = (err, req, res, next) => {
   if(err.message.toLowerCase().includes('data and salt arguments required'))
     return res.sendStatus(400);
 
+  if(err) console.log('error from middleware: ', err);
   res.sendStatus(500);
 };
