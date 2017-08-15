@@ -14,7 +14,7 @@ describe('Testing Profile Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe('Profile POST', () => {
+  describe.only('Profile POST', () => {
     it('should return 201 and the profile', () => {
       let tempUser;
       return mockUser.createOne()
@@ -29,10 +29,11 @@ describe('Testing Profile Model', () => {
             .field('city', 'Springfield')
             .field('state', 'TS')
             .field('phone', '1234567890')
-            .field('isCook', true);
-        //  .attach('image', `${__dirname}/assets/me.jpg`);
+            .field('wantsToBeCook', true)
+            .attach('avatarURL', `${__dirname}/assets/lion.jpg`);
         })
         .then(res => {
+          console.log(res.body);
           expect(res.status).toEqual(201);
           expect(res.body.userId).toEqual(tempUser.user._id.toString());
           expect(res.body.firstName).toEqual('Bart');
@@ -42,10 +43,10 @@ describe('Testing Profile Model', () => {
           expect(res.body.city).toEqual('Springfield');
           expect(res.body.state).toEqual('TS');
           expect(res.body.phone).toEqual('1234567890');
-          expect(res.body.isCook).toEqual(true);
-          // expect(res.body.image).toExist();
+          expect(res.body.wantsToBeCook).toEqual(true);
+          expect(res.body.avatarURL).toExist();
         });
-    });//.timeout(3000);
+    }).timeout(3000);
     it('should return 400 bad request', () => {
       return mockUser.createOne()
         .then(userData => {
@@ -73,8 +74,8 @@ describe('Testing Profile Model', () => {
             .field('city', 'Springfield')
             .field('state', 'TS')
             .field('phone', '1234567890')
-            .field('isCook', true)
-            //  .attach('image', `${__dirname}/assets/me.jpg`)
+            .field('wantsToBeCook', true)
+            .attach('avatarURL', `${__dirname}/assets/lion.jpg`)
             .then(res => {
               throw res;
             })
@@ -100,12 +101,13 @@ describe('Testing Profile Model', () => {
             .field('city', 'Springfield')
             .field('state', 'TS')
             .field('phone', '1234567890')
-            .field('isCook', true);
-          //  .attach('image', `${__dirname}/assets/me.jpg`)
+            .field('wantsToBeCook', true)
+            .attach('avatarURL', `${__dirname}/assets/lion.jpg`);
         })
         .then(profile => {
           return superagent.get(`${API_URL}/api/profiles/${profile.body.userId}`)
             .then(res => {
+              console.log(res.body);
               expect(res.status).toEqual(200);
               expect(res.body.userId).toEqual(tempUser.user._id.toString());
               expect(res.body.firstName).toEqual('Bart');
@@ -115,11 +117,11 @@ describe('Testing Profile Model', () => {
               expect(res.body.city).toEqual('Springfield');
               expect(res.body.state).toEqual('TS');
               expect(res.body.phone).toEqual('1234567890');
-              expect(res.body.isCook).toEqual(true);
-              // expect(res.body.image).toExist();
+              expect(res.body.wantsToBeCook).toEqual(true);
+              expect(res.body.avatarURL).toExist();
             });
         });
-    });//.timeout(3000);
+    }).timeout(3000);
     it('Should return 404 not found', () => {
       return superagent.get(`${API_URL}/api/profiles/dasdasdasdasd`)
         .then(res => {

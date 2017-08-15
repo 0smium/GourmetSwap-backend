@@ -13,7 +13,8 @@ module.exports = fieldName => (req, res, next) => {
   // console.log('s3 req.body', fieldName);
   upload.single(fieldName)(req, res, err => {
     if (err) return next(err);
-    if (!req.file) return next(new Error('validation failed no file added'));
+    // if (!req.file) return next(new Error('validation failed no file added'));
+    if (!req.file) return next();
 
     s3
       .upload({
