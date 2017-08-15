@@ -38,4 +38,4 @@ mealRouter.delete('/api/meals:id', (req, res, next) => {
       res.setStatus(204);
     })
     .catch(next);
-})
+});
