@@ -14,7 +14,7 @@ describe('Testing Profile Model', () => {
   after(server.stop);
   afterEach(cleanDB);
 
-  describe.only('Profile POST', () => {
+  describe('Profile POST', () => {
     it('should return 201 and the profile', () => {
       let tempUser;
       return mockUser.createOne()
