@@ -6,7 +6,7 @@ import { bearerAuth } from '../middleware/parser-auth.js';
 const cookRouter = module.exports = new Router();
 
 cookRouter.post('/api/cook', bearerAuth, parserBody, (req, res, next) => {
-  req.body.profile = req.user._id;
+  req.body.userId = req.user._id;
   // req.body.email = req.user.email;
   new Cook(req.body)
     .save()

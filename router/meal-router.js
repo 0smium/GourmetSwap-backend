@@ -3,15 +3,26 @@ import parserBody from '../middleware/parser-body.js';
 import Meal from '../model/meal.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
 import s3upload from '../middleware/s3-upload-middleware.js';
+import Cook from '../model/cook.js';
 
 const mealRouter = module.exports = new Router();
 
 mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next) => {
   req.body.userId = req.user._id;
   req.body.photoURL = req.s3Data.Location;
+  // req.body.meals = [];
   new Meal(req.body)
     .save()
-    .then(meal => res.status(201).json(meal))
+    .then(meal => {
+      return Cook.findOne({userId: req.user._id})
+      .then(cook => {
+        console.log('meal', meal);
+        cook.meals.push(meal._id);
+        console.log('cook', cook);
+        return cook.save()
+        .then(() => res.status(201).json(meal));
+      });
+    })
     .catch(next);
 });
 

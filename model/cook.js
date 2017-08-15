@@ -9,11 +9,11 @@ const cookSchema = new Schema ({
   services: {type: Array, required: true},
   cuisines: {type: Array, required: true},
   offerDelivery: {type: Boolean, required: true},
-  profile: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
-  meals: {type: Array, required: true},
-  community: {type: String, required: true}, 
+  userId: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
+  meals: [{type: String}],
+  community: {type: String, required: true},
   hoursPerWeek: {type: Number, required: true},
-  moreIinfo: {type: String},
+  moreInfo: {type: String},
   howDidYouHear: {type: String}
 });
 
