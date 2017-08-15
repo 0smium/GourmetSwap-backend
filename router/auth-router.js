@@ -1,16 +1,15 @@
 'use strict';
 
-const jsonParser = require('body-parser').json();
 const { Router } = require('express');
-const basicAuth = require('../lib/basic-auth-middleware.js');
 const User = require('../model/user.js');
-import { bearerAuth } from '../lib/parser-auth.js';
-import parserBody from '../lib/parser-body.js';
+const jsonParser = require('body-parser').json();
+// import basicAuth from '../middleware/basic-auth-middleware.js';
+import parserBody from '../middleware/parser-body.js';
+import { basicAuth, bearerAuth } from '../middleware/parser-auth.js';
 
 const authRouter = module.exports = new Router();
 
 authRouter.post('/api/signup', jsonParser, (req, res, next) => {
-  console.log('req.body: ', req.body);
   User.create(req.body)
     .then(token => {
       res.status(201).send(token);
@@ -28,7 +27,7 @@ authRouter.put('/api/users', bearerAuth, parserBody, (req, res, next) => {
     new: true,
     runValidators: true,
   };
-  
+
   User.findOneAndUpdate(req.user._id, req.body, options)
     .then(profile => res.status(202).json(profile))
     .catch(next);
@@ -39,7 +38,7 @@ authRouter.put('/api/users', bearerAuth, parserBody, (req, res, next) => {
 //     new: true,
 //     runValidators: true,
 //   };
-  
+
 //   User.findOneAndUpdate(req.user._id, req.body, options)
 //     .then(profile => res.status(202).json(profile))
 //     .catch(next);

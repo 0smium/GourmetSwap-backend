@@ -1,27 +1,28 @@
 import * as jwt from 'jsonwebtoken';
 import User from '../model/user.js';
 import createError from 'http-errors';
-import {promisify, partial} from './util.js';
+import {promisify, partial} from '../middleware/util.js';
 
 export const basicAuth = (req, res, next) => {
+  // console.log('parser-auth basicAuth req.body', req.body);
   let {authorization} = req.headers;
   if(!authorization)
     return next(createError(400, 'AUTH ERROR: no authorization header'));
 
   let encoded = authorization.split('Basic ')[1];
   if(!encoded)
-    return next(createError(400, 'AUTH ERROR: not basic auth'));
+    return next(createError(400, 'unauthorized: no basic auth provided.'));
 
   let decoded = new Buffer(encoded, 'base64').toString();
-  let [username, password] = decoded.split(':');
-  if(!username || !password)
-    return next(createError(401, 'AUTH ERROR: username or password missing'));
+  let [email, password] = decoded.split(':');
+  if(!email || !password)
+    return next(createError(401, 'unauthorized: no email or password provided.'));
 
-  User.findOne({username})
+  User.findOne({email})
     .then(user => {
       if(!user)
-        throw createError(401, 'AUTH ERROR: user not found');
-      return user.passwordCompare(password);
+        throw createError(401, 'unauthorized: user does not exist.');
+      return user.passwordHashCompare(password);
     })
     .then(user => {
       req.user = user;
