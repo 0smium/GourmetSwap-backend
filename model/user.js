@@ -3,12 +3,13 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+import Mongoose, {Schema} from 'mongoose';
 
-const userSchema = mongoose.Schema({
+const userSchema = Mongoose.Schema({
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  tokenSeed: { type: String, required: true, unique: true }
+  tokenSeed: { type: String, required: true, unique: true },
+  profile: { type: Schema.Types.ObjectId }
 });
 
 userSchema.methods.passwordHashCreate = function(password) {
@@ -48,7 +49,7 @@ userSchema.methods.tokenCreate = function() {
   );
 };
 
-const User = module.exports = mongoose.model('user', userSchema);
+const User = module.exports = Mongoose.model('user', userSchema);
 
 User.create = data => {
   let password = data.password;
