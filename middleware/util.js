@@ -1,6 +1,6 @@
 // DEPENDENCIES
 import AWS from 'aws-sdk';
-import {extname} from 'path';
+// import {extname} from 'path';
 import fs from 'fs-extra';
 
 const s3 = new AWS.S3();

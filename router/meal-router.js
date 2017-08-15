@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import parserBody from '../lib/parser-body.js';
+import parserBody from '../middleware/parser-body.js';
 import Meal from '../model/meal.js';
-import { bearerAuth } from '../lib/parser-auth.js';
+import { bearerAuth } from '../middleware/parser-auth.js';
 
 const mealRouter = module.exports = new Router();
 
@@ -38,4 +38,4 @@ mealRouter.delete('/api/meals:id', (req, res, next) => {
       res.setStatus(204);
     })
     .catch(next);
-})
+});
