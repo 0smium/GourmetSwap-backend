@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import parserBody from '../lib/parser-body.js';
+import parserBody from '../middleware/parser-body.js';
 import Profile from '../model/profile.js';
-import { bearerAuth } from '../lib/parser-auth.js';
+import { bearerAuth } from '../middleware/parser-auth.js';
 
 const profileRouter = module.exports = new Router();
 
