@@ -10,7 +10,8 @@ const userSchema = Mongoose.Schema({
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String },
   tokenSeed: { type: String, unique: true },
-  profile: { type: Schema.Types.ObjectId }
+  profile: { type: Schema.Types.ObjectId },
+  cook: {type: Boolean, required: true, default: false}
 });
 
 userSchema.methods.passwordHashCreate = function(password) {
@@ -50,6 +51,17 @@ userSchema.methods.tokenCreate = function() {
   );
 };
 
+// userSchema.methods.tokenCreate  = function(){
+//   this.tokenSeed = randomBytes(32).toString('base64')
+//   return this.save()
+//   .then(user => {
+//     return jwt.sign({tokenSeed: this.tokenSeed}, process.env.SECRET)
+//   })
+//   .then(token => {
+//     return token
+//   })
+// }
+
 const User = module.exports = Mongoose.model('user', userSchema);
 
 User.create = data => {
@@ -65,17 +77,17 @@ User.handleOAUTH = function(data) {
     return Promise.reject(
       createError(400, 'VALIDATION ERROR: missing username email or password '));
   return User.findOne({email: data.email})
-  .then(user => {
-    if(!user)
-      throw new Error('create the user');
-    console.log('logging in account');
-    return user;
-  })
-  .catch(() => {
-    // create user from the email
-    console.log('creating account');
-    return new User({
-      email: data.email,
-    }).save();
-  });
+    .then(user => {
+      if(!user)
+        throw new Error('create the user');
+      console.log('logging in account');
+      return user;
+    })
+    .catch(() => {
+      // create user from the email
+      console.log('creating account');
+      return new User({
+        email: data.email,
+      }).save();
+    });
 };
