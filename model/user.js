@@ -9,7 +9,7 @@ import createError from 'http-errors';
 const userSchema = Mongoose.Schema({
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String },
-  tokenSeed: { type: String, required: true, unique: true },
+  tokenSeed: { type: String, unique: true },
   profile: { type: Schema.Types.ObjectId }
 });
 

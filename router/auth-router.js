@@ -42,6 +42,7 @@ authRouter.get('/oauth/google/code', (req, res, next) => {
     res.redirect(process.env.CLIENT_URL);
   } else {
     // exchange the code for a google access token
+    console.log('code', req.query.code);
     superagent.post('https://www.googleapis.com/oauth2/v4/token')
     .type('form')
     .send({
