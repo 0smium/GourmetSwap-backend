@@ -15,13 +15,13 @@ mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next)
     .save()
     .then(meal => {
       return Cook.findOne({userId: req.user._id})
-      .then(cook => {
-        console.log('meal', meal);
-        cook.meals.push(meal._id);
-        console.log('cook', cook);
-        return cook.save()
-        .then(() => res.status(201).json(meal));
-      });
+        .then(cook => {
+          console.log('meal', meal);
+          cook.meals.push(meal._id);
+          console.log('cook', cook);
+          return cook.save()
+            .then(() => res.status(201).json(meal));
+        });
     })
     .catch(next);
 });
@@ -31,7 +31,7 @@ mealRouter.put('/api/meals/:id', bearerAuth, parserBody, (req, res, next) => {
     new: true,
     runValidators: true,
   };
-  req.body.userId = req.user._id;
+  req.body.userId = req.params.id;
   Meal.findOneAndUpdate(req.body.userId, req.body, options)
     .then(meal => res.status(202).json(meal))
     .catch(next);
@@ -45,8 +45,25 @@ mealRouter.get('/api/meals/:id', (req, res, next) => {
     .catch(next);
 });
 
-mealRouter.delete('/api/meals:id', (req, res, next) => {
-  Meal.findOneAndDelete({ userId: req. params.id })
+mealRouter.get('/api/meals', (req, res, next) => {
+
+  if(req.query.sortBy) {
+    let sortBy = req.query.sortBy;
+  }
+  let pageNumber = Number(req.query.page);
+  if (!pageNumber || pageNumber < 1) pageNumber = 1;
+  pageNumber--;
+
+  Meal.find({})
+    .sort({ title: 'asc' })
+    .skip(pageNumber * 50)
+    .limit(50)
+    .then(meals => res.status(200).json(meals))
+    .catch(next);
+});
+
+mealRouter.delete('/api/meals/:id', bearerAuth, (req, res, next) => {
+  Meal.findOneAndDelete({ userId: req.params.id })
     .then(() => {
       res.setStatus(204);
     })

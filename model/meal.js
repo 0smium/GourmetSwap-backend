@@ -12,7 +12,8 @@ const mealSchema = new Schema({
   endDate: {type: Date, required: true},
   location: {type: String, required: true},
   enabled: {type: Boolean, required: true},
-  price: {type: Number, required: true}
+  price: {type: Number, required: true},
+  allTimeOrders: {type: Number}
 });
 
 module.exports = Mongoose.model('meal', mealSchema);

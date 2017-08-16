@@ -5,20 +5,32 @@ import { bearerAuth } from '../middleware/parser-auth.js';
 
 const cookRouter = module.exports = new Router();
 
-cookRouter.post('/api/cook', bearerAuth, parserBody, (req, res, next) => {
+cookRouter.post('/api/cooks', bearerAuth, parserBody, (req, res, next) => {
   req.body.userId = req.user._id;
-  // req.body.email = req.user.email;
   new Cook(req.body)
     .save()
     .then(cook => res.status(201).json(cook))
     .catch(next);
 });
 // try this yall
-cookRouter.get('/api/cook', bearerAuth, parserBody, (req, res, next) => {
-  Cook.findOne({userId: req.user._id})
+cookRouter.get('/api/cooks/:id', bearerAuth, parserBody, (req, res, next) => {
+  Cook.findOne({userId: req.params.id})
     .then(() => {
       res.text('true');
     })
     .catch(next);
   //then on success send response, with which state on front end is state
+});
+
+cookRouter.put('/api/cooks/:id', bearerAuth, parserBody, (req, res, next) => {
+  let options = {
+    new: true,
+    runValidators: true,
+  };
+  req.body.userId = req.params.id;
+  Cook.findOneAndUpdate(req.body.userId, req.body, options)
+    .then(cook => {
+      res.status(202).json(cook);
+    })
+    .catch(next);
 });
