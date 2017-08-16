@@ -16,14 +16,16 @@ profileRouter.post('/api/profiles', bearerAuth, parserBody, s3Upload('avatarURL'
     .catch(next);
 });
 
-profileRouter.put('/api/profiles/:id', bearerAuth, parserBody, (req, res, next) => {
+profileRouter.put('/api/profiles/:id', bearerAuth, parserBody, s3Upload('avatarURL'), (req, res, next) => {
   let options = {
     new: true,
     runValidators: true,
   };
-  req.body.userId = req.user._id;
+  req.body.userId = req.params.id;
   Profile.findOneAndUpdate(req.body.userId, req.body, options)
-    .then(profile => res.status(202).json(profile))
+    .then(profile => {
+      res.status(202).json(profile);
+    })
     .catch(next);
 });
 
