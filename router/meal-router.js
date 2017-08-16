@@ -4,7 +4,6 @@ import Meal from '../model/meal.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
 import s3upload from '../middleware/s3-upload-middleware.js';
 import Cook from '../model/cook.js';
-import uriDecode from 'uridecode';
 // import pagerCreate from '../lib/pager-create.js';
 
 const mealRouter = module.exports = new Router();
