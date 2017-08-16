@@ -12,7 +12,7 @@ const mockUser = require('./lib/mock-user.js');
 
 const API_URL = process.env.API_URL;
 
-describe('Testing Authentication', () => {
+describe.only('Testing Authentication', () => {
   before(server.start);
   after(server.stop);
   afterEach(cleanDB);
