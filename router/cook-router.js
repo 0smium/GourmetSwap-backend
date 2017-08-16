@@ -13,3 +13,12 @@ cookRouter.post('/api/cook', bearerAuth, parserBody, (req, res, next) => {
     .then(cook => res.status(201).json(cook))
     .catch(next);
 });
+// try this yall
+cookRouter.get('/api/cook', bearerAuth, parserBody, (req, res, next) => {
+  Cook.findOne({userId: req.user._id})
+    .then(() => {
+      res.text('true');
+    })
+    .catch(next);
+  //then on success send response, with which state on front end is state
+});

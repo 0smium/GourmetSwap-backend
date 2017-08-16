@@ -4,11 +4,12 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 import Mongoose, {Schema} from 'mongoose';
+import createError from 'http-errors';
 
 const userSchema = Mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  tokenSeed: { type: String, required: true, unique: true },
+  passwordHash: { type: String },
+  tokenSeed: { type: String, unique: true },
   profile: { type: Schema.Types.ObjectId }
 });
 
@@ -57,4 +58,24 @@ User.create = data => {
   return new User(data)
     .passwordHashCreate(password)
     .then(user => user.tokenCreate());
+};
+
+User.handleOAUTH = function(data) {
+  if(!data || !data.email)
+    return Promise.reject(
+      createError(400, 'VALIDATION ERROR: missing username email or password '));
+  return User.findOne({email: data.email})
+  .then(user => {
+    if(!user)
+      throw new Error('create the user');
+    console.log('logging in account');
+    return user;
+  })
+  .catch(() => {
+    // create user from the email
+    console.log('creating account');
+    return new User({
+      email: data.email,
+    }).save();
+  });
 };
