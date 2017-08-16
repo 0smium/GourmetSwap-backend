@@ -7,17 +7,33 @@ const jsonParser = require('body-parser').json();
 import parserBody from '../middleware/parser-body.js';
 import { basicAuth, bearerAuth } from '../middleware/parser-auth.js';
 import superagent from 'superagent';
+// import cors from 'cors';
 
 const authRouter = module.exports = new Router();
 
 authRouter.post('/api/signup', jsonParser, (req, res, next) => {
   User.create(req.body)
     .then(token => {
-      res.status(201).send(token);
+      res.cookie('Gourmet-Swap-Token', token);
+      res.send(token);
+      // res.status(201).send(token);
       // console.log('res: ', res);
     })
     .catch(next);
 });
+
+
+// .post('/signup', bodyParser.json() , (req, res, next) => {
+//   new User.createFromSignup(req.body)
+//   .then(user => user.tokenCreate())
+//   .then(token => {
+//     res.cookie('X-Slugchat-Token', token)
+//     res.send(token)
+//   })
+//   .catch(next)
+// })
+
+
 
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
   req.user.tokenCreate().then(token => res.send(token)).catch(next);

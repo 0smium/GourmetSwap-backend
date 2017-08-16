@@ -50,6 +50,17 @@ userSchema.methods.tokenCreate = function() {
   );
 };
 
+// userSchema.methods.tokenCreate  = function(){
+//   this.tokenSeed = randomBytes(32).toString('base64')
+//   return this.save()
+//   .then(user => {
+//     return jwt.sign({tokenSeed: this.tokenSeed}, process.env.SECRET)
+//   })
+//   .then(token => {
+//     return token
+//   })
+// }
+
 const User = module.exports = Mongoose.model('user', userSchema);
 
 User.create = data => {
