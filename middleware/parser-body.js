@@ -4,6 +4,10 @@ import createError from 'http-errors';
 
 // INTERFACE
 export default (req, res, next) => {
+
+  if(!req.headers['content-type'])
+    return next(createError(400, 'VALIDATION ERROR: headers must contain content-type'));
+
   let contentType = req.headers['content-type'];
 
   if(contentType.indexOf('application/json') > -1)

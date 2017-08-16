@@ -30,10 +30,9 @@ describe('Testing Profile Model', () => {
             .field('state', 'TS')
             .field('phone', '1234567890')
             .field('wantsToBeCook', true)
-            .attach('avatarURL', `${__dirname}/assets/lion.jpg`);
+            .attach('avatarURL', `${__dirname}/assets/bart.png`);
         })
         .then(res => {
-          console.log(res.body);
           expect(res.status).toEqual(201);
           expect(res.body.userId).toEqual(tempUser.user._id.toString());
           expect(res.body.firstName).toEqual('Bart');
@@ -75,7 +74,7 @@ describe('Testing Profile Model', () => {
             .field('state', 'TS')
             .field('phone', '1234567890')
             .field('wantsToBeCook', true)
-            .attach('avatarURL', `${__dirname}/assets/lion.jpg`)
+            .attach('avatarURL', `${__dirname}/assets/bart.png`)
             .then(res => {
               throw res;
             })
@@ -87,8 +86,8 @@ describe('Testing Profile Model', () => {
   });
 
   describe('Profile GET', () => {
-    let tempUser;
     it('should return 200 and the profile', () => {
+      let tempUser;
       return mockUser.createOne()
         .then(userData => {
           tempUser = userData;
@@ -102,12 +101,11 @@ describe('Testing Profile Model', () => {
             .field('state', 'TS')
             .field('phone', '1234567890')
             .field('wantsToBeCook', true)
-            .attach('avatarURL', `${__dirname}/assets/lion.jpg`);
+            .attach('avatarURL', `${__dirname}/assets/bart.png`);
         })
         .then(profile => {
           return superagent.get(`${API_URL}/api/profiles/${profile.body.userId}`)
             .then(res => {
-              console.log(res.body);
               expect(res.status).toEqual(200);
               expect(res.body.userId).toEqual(tempUser.user._id.toString());
               expect(res.body.firstName).toEqual('Bart');
@@ -133,125 +131,112 @@ describe('Testing Profile Model', () => {
     });
   });
 
-  // describe('Profile PUT', () => {
-  //   it('should return 202 and the new profile', () => {
-  //     let tempUser;
-  //     return mockResidence.createOne()
-  //       .then(residence => {
-  //         return mockUser.createOne()
-  //           .then(userData => {
-  //             tempUser = userData;
-  //             return superagent.post(`${API_URL}/api/profiles`)
-  //               .set('Authorization', `Bearer ${userData.token}`)
-  //               .field('name', 'Phil')
-  //               .field('phone', '9998881234')
-  //               .field('bio', 'I am Phil')
-  //               .field('residenceId', residence.id.toString())
-  //               .attach('image', `${__dirname}/assets/me.jpg`);
-  //           })
-  //           .then(profile => {
-  //             return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-  //               .set('Authorization', `Bearer ${tempUser.token}`)
-  //               .send({
-  //                 name: 'Paul',
-  //                 bio: 'I am no longer Phil, I am Paul'
-  //               });
-  //           })
-  //           .then(res => {
-  //             expect(res.status).toEqual(202);
-  //             expect(res.body.userId).toEqual(tempUser.user._id.toString());
-  //             expect(res.body.name).toEqual('Paul');
-  //             expect(res.body.phone).toEqual('9998881234');
-  //             expect(res.body.bio).toEqual('I am no longer Phil, I am Paul');
-  //             expect(res.body.residenceId).toEqual(residence.id.toString());
-  //             expect(res.body.image).toExist();
-  //           });
-  //       });
-  //   }).timeout(3000);
-  //   it('should return 400 bad request', () => {
-  //     let tempUser;
-  //     return mockResidence.createOne()
-  //       .then(residence => {
-  //         return mockUser.createOne()
-  //           .then(userData => {
-  //             tempUser = userData;
-  //             return superagent.post(`${API_URL}/api/profiles`)
-  //               .set('Authorization', `Bearer ${userData.token}`)
-  //               .field('name', 'Phil')
-  //               .field('phone', '9998881234')
-  //               .field('bio', 'I am Phil')
-  //               .field('residenceId', residence.id.toString())
-  //               .attach('image', `${__dirname}/assets/me.jpg`);
-  //           })
-  //           .then(profile => {
-  //             return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-  //               .set('Authorization', `Bearer ${tempUser.token}`)
-  //               .send({
-  //                 userId: 123,
-  //                 name: 321,
-  //                 bio: {none: 'none'},
-  //               });
-  //           })
-  //           .then(res => {
-  //             throw res;
-  //           })
-  //           .catch(res => {
-  //             expect(res.status).toEqual(400);
-  //           });
-  //       });
-  //   });
-  //   it('should return 401 unauthorized', () => {
-  //     return mockResidence.createOne()
-  //       .then(residence => {
-  //         return superagent.post(`${API_URL}/api/profiles`)
-  //           .field('name', 'Phil')
-  //           .field('phone', '9998881234')
-  //           .field('bio', 'I am Phil')
-  //           .field('residenceId', residence.id.toString())
-  //           .attach('image', `${__dirname}/assets/me.jpg`);
-  //       })
-  //       .then(profile => {
-  //         return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
-  //           .field('name', 'Mike')
-  //           .field('phone', '1234881234')
-  //           .field('bio', 'I am mike');
-  //       })
-  //       .then(res => {
-  //         throw res;
-  //       })
-  //       .catch(res => {
-  //         expect(res.status).toEqual(401);
-  //       });
-  //   });
-  //   it('should return 404 not found', () => {
-  //     return mockResidence.createOne()
-  //       .then(residence => {
-  //         return mockUser.createOne()
-  //           .then(userData => {
-  //             return superagent.post(`${API_URL}/api/profiles`)
-  //               .set('Authorization', `Bearer ${userData.token}`)
-  //               .field('name', 'Phil')
-  //               .field('phone', '9998881234')
-  //               .field('bio', 'I am Phil')
-  //               .field('residenceId', residence.id.toString())
-  //               .attach('image', `${__dirname}/assets/me.jpg`)
-  //               .then(() => {
-  //                 return superagent.put(`${API_URL}/api/profiles/sdasdasdasdasdasdasdasdasdasd`)
-  //                   .set('Authorization', `Bearer ${userData.token}`)
-  //                   .send({
-  //                     userId: 'jflkasjdlksajdl',
-  //                     name: 'Paul',
-  //                     bio: 'I am no longer Phil, I am Paul',
-  //                   });
-  //               })
-  //               .then(res => {
-  //                 throw res;
-  //               })
-  //               .catch(res => {
-  //                 expect(res.status).toEqual(404);
-  //               });
-  //           });
-  //       });
-  //   });
-  // });
+  describe('Profile PUT', () => {
+    it('should return 202 and the new profile', () => {
+      let tempUser;
+      return mockUser.createOne()
+        .then(userData => {
+          tempUser = userData;
+          return superagent.post(`${API_URL}/api/profiles`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .field('firstName', 'Bart')
+            .field('lastName', 'Simpson')
+            .field('streetAddress', '742 Evergreen Ter')
+            .field('zip', '00000')
+            .field('city', 'Springfield')
+            .field('state', 'TS')
+            .field('phone', '1234567890')
+            .field('wantsToBeCook', true)
+            .attach('avatarURL', `${__dirname}/assets/bart.png`);
+        })
+        .then(profile => {
+          return superagent.put(`${API_URL}/api/profiles/${profile.body.userId}`)
+            .set('Authorization', `Bearer ${tempUser.token}`)
+            .field('firstName', 'Lisa')
+            .attach('avatarURL', `${__dirname}/assets/lisa.png`);
+        })
+        .then(res => {
+          expect(res.status).toEqual(202);
+          expect(res.body.userId).toEqual(tempUser.user._id.toString());
+          expect(res.body.firstName).toEqual('Lisa');
+          expect(res.body.avatarURL).toExist();
+        });
+    }).timeout(3000);
+    it('should return 400 bad request', () => {
+      let tempUser;
+      return mockUser.createOne()
+        .then(userData => {
+          tempUser = userData;
+          return superagent.post(`${API_URL}/api/profiles`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .field('firstName', 'Bart')
+            .field('lastName', 'Simpson')
+            .field('streetAddress', '742 Evergreen Ter')
+            .field('zip', '00000')
+            .field('city', 'Springfield')
+            .field('state', 'TS')
+            .field('phone', '1234567890')
+            .field('wantsToBeCook', true);
+        })
+        .then(profile => {
+          return superagent.put(`${API_URL}/api/profiles/${profile.body.userId}`)
+            .set('Authorization', `Bearer ${tempUser.token}`);
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(400);
+        });
+    }).timeout(3000);
+    it('should return 401 unauthorized', () => {
+      return superagent.post(`${API_URL}/api/profiles`)
+        .field('firstName', 'Bart')
+        .field('lastName', 'Simpson')
+        .field('streetAddress', '742 Evergreen Ter')
+        .field('zip', '00000')
+        .field('city', 'Springfield')
+        .field('state', 'TS')
+        .field('phone', '1234567890')
+        .field('wantsToBeCook', true)
+        .then(profile => {
+          return superagent.put(`${API_URL}/api/profiles/${profile.body._id}`)
+            .field('phone', '1234881234');
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401);
+        });
+    });
+    it('should return 404 not found', () => {
+      let tempUser;
+      return mockUser.createOne()
+        .then(userData => {
+          tempUser = userData;
+          return superagent.post(`${API_URL}/api/profiles`)
+            .set('Authorization', `Bearer ${userData.token}`)
+            .field('firstName', 'Bart')
+            .field('lastName', 'Simpson')
+            .field('streetAddress', '742 Evergreen Ter')
+            .field('zip', '00000')
+            .field('city', 'Springfield')
+            .field('state', 'TS')
+            .field('phone', '1234567890')
+            .field('wantsToBeCook', true);
+        })
+        .then(() => {
+          return superagent.put(`${API_URL}/api/profiles/lkfjwelkjfldjflksdjgf`)
+            .set('Authorization', `Bearer ${tempUser.token}`)
+            .field('firstName', 'Lisa');
+        })
+        .then(res => {
+          throw res;
+        })
+        .catch(res => {
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
 });
