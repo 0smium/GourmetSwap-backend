@@ -39,6 +39,12 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
   req.user.tokenCreate().then(token => res.send(token)).catch(next);
 });
 
+authRouter.get('/api/users/auth', bearerAuth, (req, res) => {
+  console.log('authRouter', req.user);
+  if(req.user.cook) res.send('true');
+  res.send('false');
+});
+
 authRouter.put('/api/users', bearerAuth, parserBody, (req, res, next) => {
   let options = {
     new: true,
