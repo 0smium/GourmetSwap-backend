@@ -4,6 +4,8 @@ import Meal from '../model/meal.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
 import s3upload from '../middleware/s3-upload-middleware.js';
 import Cook from '../model/cook.js';
+import uriDecode from 'uridecode';
+// import pagerCreate from '../lib/pager-create.js';
 
 const mealRouter = module.exports = new Router();
 
@@ -38,24 +40,52 @@ mealRouter.put('/api/meals/:id', bearerAuth, parserBody, (req, res, next) => {
 });
 
 mealRouter.get('/api/meals/:id', (req, res, next) => {
-  Meal.findOne({ userId: req.params.id })
+  Meal.findOne({ _id: req.params.id })
     .then(meal => {
       res.json(meal);
     })
     .catch(next);
 });
 
+// mealRouter.get('/api/meals', (req, res, next) => {
+//   let sortBy = req.query.sortBy || 'title';
+//   pagerCreate(Meal)(req, {}, {[sortBy]: 'asc'})
+//     .then(result => res.send(result))
+//     .catch(next);
+// });
+
 mealRouter.get('/api/meals', (req, res, next) => {
 
-  if(req.query.sortBy) {
-    let sortBy = req.query.sortBy;
-  }
   let pageNumber = Number(req.query.page);
   if (!pageNumber || pageNumber < 1) pageNumber = 1;
   pageNumber--;
 
+  let sortBy = req.query.sortBy || 'title';
+  let sortType = req.query.sortType || 'asc';
+
   Meal.find({})
-    .sort({ title: 'asc' })
+    .sort({ [sortBy]: sortType })
+    .skip(pageNumber * 50)
+    .limit(50)
+    .then(meals => res.status(200).json(meals))
+    .catch(next);
+});
+
+mealRouter.get('/api/meals/where/equals', (req, res, next) => {
+
+  let pageNumber = Number(req.query.page);
+  if (!pageNumber || pageNumber < 1) pageNumber = 1;
+  pageNumber--;
+
+  let sortBy = req.query.sortBy || 'title';
+  let sortType = req.query.sortType || 'asc';
+  let where = req.query.where;
+  let equals = decodeURI(req.query.equals);
+  console.log(equals);
+
+  Meal.find({})
+    .where(where).equals(equals)
+    .sort({ [sortBy]: sortType })
     .skip(pageNumber * 50)
     .limit(50)
     .then(meals => res.status(200).json(meals))

@@ -77,17 +77,17 @@ User.handleOAUTH = function(data) {
     return Promise.reject(
       createError(400, 'VALIDATION ERROR: missing username email or password '));
   return User.findOne({email: data.email})
-  .then(user => {
-    if(!user)
-      throw new Error('create the user');
-    console.log('logging in account');
-    return user;
-  })
-  .catch(() => {
-    // create user from the email
-    console.log('creating account');
-    return new User({
-      email: data.email,
-    }).save();
-  });
+    .then(user => {
+      if(!user)
+        throw new Error('create the user');
+      console.log('logging in account');
+      return user;
+    })
+    .catch(() => {
+      // create user from the email
+      console.log('creating account');
+      return new User({
+        email: data.email,
+      }).save();
+    });
 };
