@@ -6,13 +6,13 @@ const cookSchema = new Schema ({
   restaurantsCookedIn: {type: Number, required: true},
   bestDescribes: {type: String, require: true},
   mealsPerWeek: {type: Number, required: true},
-  services: {type: Array, required: true},
-  cuisines: {type: Array, required: true},
+  services: {type: String, required: true},
+  cuisines: {type: String, required: true},
   offerDelivery: {type: Boolean, required: true},
   userId: {type: Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
   meals: [{type: String}],
   community: {type: String, required: true},
-  hoursPerWeek: {type: Number, required: true},
+  hoursPerWeek: {type: String, required: true},
   moreInfo: {type: String},
   howDidYouHear: {type: String}
 });
