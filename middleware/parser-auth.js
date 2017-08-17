@@ -4,7 +4,6 @@ import createError from 'http-errors';
 import {promisify, partial} from '../middleware/util.js';
 
 export const basicAuth = (req, res, next) => {
-  // console.log('parser-auth basicAuth req.body', req.body);
   let {authorization} = req.headers;
   if(!authorization)
     return next(createError(400, 'AUTH ERROR: no authorization header'));
