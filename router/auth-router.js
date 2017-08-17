@@ -27,7 +27,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
     res.cookie('Gourmet-Swap-Token', token);
     res.send(token);
   })
-    .catch(next);
+  .catch(next);
 });
 
 authRouter.get('/api/users/auth', bearerAuth, (req, res) => {
