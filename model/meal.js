@@ -5,6 +5,7 @@ const mealSchema = new Schema({
   title: {type: String, required: true},
   cuisines: [{type: String, required: true}],
   description: {type: String, required: true},
+  pickupOffered: {type: Boolean, required: true},
   deliveryOffered: {type: Boolean, required: true},
   portions: {type: Number, required: true},
   photoURL: {type: String},
