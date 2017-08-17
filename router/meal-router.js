@@ -8,10 +8,10 @@ import Cook from '../model/cook.js';
 
 const mealRouter = module.exports = new Router();
 
-mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next) => {
+// mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next) => {
+mealRouter.post('/api/meals', bearerAuth, parserBody, s3upload('photoURL'), (req, res, next) => {
+  if(req.s3Data) req.body.photoURL = req.s3Data.Location;
   req.body.userId = req.user._id;
-  req.body.photoURL = req.s3Data.Location;
-  // req.body.meals = [];
   new Meal(req.body)
     .save()
     .then(meal => {
