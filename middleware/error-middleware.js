@@ -23,5 +23,6 @@ module.exports = (err, req, res, next) => {
   if(err.message.toLowerCase().includes('data and salt arguments required'))
     return res.sendStatus(400);
 
+  if(err) console.log('undefined error from middleware: ', err);
   res.sendStatus(500);
 };
