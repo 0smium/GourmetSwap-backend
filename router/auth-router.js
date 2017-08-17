@@ -15,8 +15,8 @@ authRouter.post('/api/signup', jsonParser, (req, res, next) => {
   User.create(req.body)
     .then(token => {
       res.cookie('Gourmet-Swap-Token', token);
-      res.send(token);
-      // res.status(201).send(token);
+      // res.send(token);
+      res.status(201).send(token);
       // console.log('res: ', res);
     })
     .catch(next);
@@ -27,7 +27,7 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
     res.cookie('Gourmet-Swap-Token', token);
     res.send(token);
   })
-  .catch(next);
+    .catch(next);
 });
 
 authRouter.get('/api/users/auth', bearerAuth, (req, res) => {
