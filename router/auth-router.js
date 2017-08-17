@@ -15,9 +15,7 @@ authRouter.post('/api/signup', jsonParser, (req, res, next) => {
   User.create(req.body)
     .then(token => {
       res.cookie('Gourmet-Swap-Token', token);
-      // res.send(token);
       res.status(201).send(token);
-      // console.log('res: ', res);
     })
     .catch(next);
 });
