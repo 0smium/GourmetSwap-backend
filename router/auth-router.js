@@ -36,7 +36,11 @@ authRouter.post('/api/signup', jsonParser, (req, res, next) => {
 
 
 authRouter.get('/api/signin', basicAuth, (req, res, next) => {
-  req.user.tokenCreate().then(token => res.send(token)).catch(next);
+  req.user.tokenCreate().then(token => {
+    res.cookie('Gourmet-Swap-Token', token);
+    res.send(token);
+  })
+    .catch(next);
 });
 
 authRouter.get('/api/users/auth', bearerAuth, (req, res) => {
