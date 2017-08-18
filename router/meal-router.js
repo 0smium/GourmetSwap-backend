@@ -55,12 +55,6 @@ mealRouter.get('/api/cook-meals/:id', (req, res, next) => {
     .catch(next);
 });
 
-// mealRouter.get('/api/meals', (req, res, next) => {
-//   let sortBy = req.query.sortBy || 'title';
-//   pagerCreate(Meal)(req, {}, {[sortBy]: 'asc'})
-//     .then(result => res.send(result))
-//     .catch(next);
-// });
 
 mealRouter.get('/api/meals', (req, res, next) => {
 
