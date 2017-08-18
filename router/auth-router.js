@@ -29,9 +29,13 @@ authRouter.get('/api/signin', basicAuth, (req, res, next) => {
 });
 
 authRouter.get('/api/users/auth', bearerAuth, (req, res) => {
-  console.log('authRouter', req.user);
   if(req.user.cook) res.send('true');
   res.send('false');
+});
+
+authRouter.get('/api/users/cook', bearerAuth, (req, res) => {
+  console.log('/users/cook req', req.user);
+  res.send(req.user);
 });
 
 authRouter.put('/api/users', bearerAuth, parserBody, (req, res, next) => {
