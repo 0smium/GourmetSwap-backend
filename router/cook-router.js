@@ -27,6 +27,11 @@ cookRouter.get('/api/cooks/:id', (req, res, next) => {
     .catch(next);
 });
 
+// cookRouter.get('/api/cooks/auth', bearerAuth, (req, res) => {
+//   console.log('cookRouter get', req);
+//   res.send('false');
+// });
+
 cookRouter.put('/api/cooks/:id', bearerAuth, parserBody, (req, res, next) => {
   let options = {
     new: true,
