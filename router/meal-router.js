@@ -4,11 +4,9 @@ import Meal from '../model/meal.js';
 import { bearerAuth } from '../middleware/parser-auth.js';
 import s3upload from '../middleware/s3-upload-middleware.js';
 import Cook from '../model/cook.js';
-// import pagerCreate from '../lib/pager-create.js';
 
 const mealRouter = module.exports = new Router();
 
-// mealRouter.post('/api/meals', bearerAuth, s3upload('photoURL'), (req, res, next) => {
 mealRouter.post('/api/meals', bearerAuth, parserBody, s3upload('photoURL'), (req, res, next) => {
   if(req.s3Data) req.body.photoURL = req.s3Data.Location;
   req.body.userId = req.user._id;
@@ -32,8 +30,8 @@ mealRouter.put('/api/meals/:id', bearerAuth, parserBody, (req, res, next) => {
     new: true,
     runValidators: true,
   };
-  req.body.userId = req.params.id;
-  Meal.findOneAndUpdate(req.body.userId, req.body, options)
+  req.body._id = req.params.id;
+  Meal.findOneAndUpdate(req.body._id, req.body, options)
     .then(meal => res.status(202).json(meal))
     .catch(next);
 });
@@ -45,13 +43,6 @@ mealRouter.get('/api/meals/:id', (req, res, next) => {
     })
     .catch(next);
 });
-
-// mealRouter.get('/api/meals', (req, res, next) => {
-//   let sortBy = req.query.sortBy || 'title';
-//   pagerCreate(Meal)(req, {}, {[sortBy]: 'asc'})
-//     .then(result => res.send(result))
-//     .catch(next);
-// });
 
 mealRouter.get('/api/meals', (req, res, next) => {
 

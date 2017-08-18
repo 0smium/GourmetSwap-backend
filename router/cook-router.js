@@ -13,21 +13,18 @@ cookRouter.post('/api/cooks', bearerAuth, parserBody, (req, res, next) => {
     .save()
     .then(cook => res.status(201).json(cook))
     .then(
-      // console.log('req.user._id', req.user._id)
       User.findByIdAndUpdate(req.user._id, {cook: true}, {new: true})
         .then(user => res.status(202).json(user))
         .catch(next)
     )
     .catch(next);
 });
-// try this yall
 cookRouter.get('/api/cooks/:id', (req, res, next) => {
   Cook.findOne({userId: req.params.id})
     .then((cook) => {
       res.json(cook);
     })
     .catch(next);
-  //then on success send response, with which state on front end is state
 });
 
 cookRouter.put('/api/cooks/:id', bearerAuth, parserBody, (req, res, next) => {

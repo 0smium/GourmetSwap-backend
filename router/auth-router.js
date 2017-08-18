@@ -3,11 +3,9 @@
 const { Router } = require('express');
 const User = require('../model/user.js');
 const jsonParser = require('body-parser').json();
-// import basicAuth from '../middleware/basic-auth-middleware.js';
 import parserBody from '../middleware/parser-body.js';
 import { basicAuth, bearerAuth } from '../middleware/parser-auth.js';
 import superagent from 'superagent';
-// import cors from 'cors';
 
 const authRouter = module.exports = new Router();
 
