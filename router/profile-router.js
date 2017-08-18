@@ -37,9 +37,3 @@ profileRouter.get('/api/profiles/:id', (req, res, next) => {
     })
     .catch(next);
 });
-
-// profileRouter.get('/api/profiles/:id', (req, res, next) => {
-//   Profile.findOne({ _id: req.params.id })
-//     .then(profile => res.json(profile))
-//     .catch(next);
-// });
